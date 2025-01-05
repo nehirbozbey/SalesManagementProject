@@ -1,0 +1,100 @@
+.commission-container {
+    display: grid;
+    gap: 30px;
+}
+
+.commission-table {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.commission-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.commission-table th,
+.commission-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.commission-table th {
+    background: #2c3e50;
+    color: white;
+}
+
+.commission-table tr:hover {
+    background: #f8f9fa;
+}
+
+.simulator-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.simulator-form {
+    display: grid;
+    gap: 20px;
+    max-width: 500px;
+}
+
+.form-group {
+    display: grid;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.form-group select,
+.form-group input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.submit-btn {
+    background: #2c3e50;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background: #34495e;
+}
+
+.result-card {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    border-left: 4px solid #2c3e50;
+}
+
+.result-card h3 {
+    margin-bottom: 15px;
+    color: #2c3e50;
+}
+
+.result-card p {
+    margin-bottom: 10px;
+}
+
+.error {
+    color: #dc3545;
+    margin-top: 10px;
+}

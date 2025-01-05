@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satış Yönetim Sistemi</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/commission.css">
+    <link rel="stylesheet" href="css/application.css">
+    <link rel="stylesheet" href="css/demographics.css">
+    <link rel="stylesheet" href="css/sector-style.css">
+    <link rel="stylesheet" href="css/product.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <h2>Yönetim Paneli</h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" data-page="home" class="active">Anasayfa</a></li>
+                <li><a href="#" data-page="commission">Komisyon</a></li>
+                <li><a href="#" data-page="application">Başvuru</a></li>
+                <li><a href="#" data-page="demography">Demografi</a></li>
+                <li><a href="#" data-page="sector">Sektör</a></li>
+                <li><a href="#" data-page="product">Ürünler</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <!-- Anasayfa -->
+            <div id="home" class="page active">
+                <h1>Anasayfa</h1>
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <h3>Günlük Başvuru</h3>
+                        <div class="value" id="daily-applications">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Red Sayısı</h3>
+                        <div class="value" id="rejections">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Toplam Ciro</h3>
+                        <div class="value" id="total-revenue">₺0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>En Aktif Bölge</h3>
+                        <div class="value" id="active-region">-</div>
+                    </div>
+                </div>
+                
+                <div class="map-container">
+                    <h2>Bölgesel Performans</h2>
+                    <div id="turkey-map"></div>
+                </div>
+                
+                <div class="chart-container">
+                    <h2>Son 7 Gün Satış Performansı</h2>
+                    <canvas id="salesChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Komisyon Sayfası -->
+            <div id="commission" class="page">
+                <h1>Komisyon</h1>
+                <div class="commission-container">
+                    <div class="commission-table">
+                        <table id="commission-table">
+                            <thead>
+                                <tr>
+                                    <th>Sektör</th>
+                                    <th>Komisyon Oranı</th>
+                                    <th>Toplam Ciro</th>
+                                    <th>Toplam Komisyon</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    
+
+                    <div class="simulator-container">
+                        <h2>Komisyon Hesaplama Simülatörü</h2>
+                        <form id="commission-simulator" class="simulator-form">
+                            <div class="form-group">
+                                <label for="sector">Sektör</label>
+                                <select id="sector" name="sector" required>
+                                    <option value="teknoloji">Teknoloji</option>
+                                    <option value="gida">Gıda</option>
+                                    <option value="tekstil">Tekstil</option>
+                                    <option value="otomotiv">Otomotiv</option>
+                                    <option value="saglik">Sağlık</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="revenue">Aylık Ciro (₺)</label>
+                                <input type="number" id="revenue" name="revenue" required>
+                            </div>
+                            <button type="submit" class="submit-btn">Hesapla</button>
+                        </form>
+                        <div id="simulation-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Başvuru Sayfası -->
+            <div id="application" class="page">
+                <h1>Başvuru</h1>
+                <div class="application-stats">
+                    <div class="stat-card">
+                        <h3>Onaylanan Başvurular</h3>
+                        <div class="value" id="approved-applications">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Toplam Başvuru</h3>
+                        <div class="value" id="total-applications">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Reddedilen Başvurular</h3>
+                        <div class="value" id="rejected-applications">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Toplam Ciro</h3>
+                        <div class="value" id="application-revenue">₺0</div>
+                    </div>
+                </div>
+
+                <div class="analytics-container">
+                    <div class="chart-grid">
+                        <div class="chart-wrapper">
+                            <h2>Red Sebepleri Analizi</h2>
+                            <canvas id="rejection-reasons-chart"></canvas>
+                        </div>
+                        <div class="chart-wrapper">
+                            <h2>Sektör Bazlı Red Sebepleri</h2>
+                            <canvas id="sector-rejections-chart"></canvas>
+                        </div>
+                        <div class="chart-wrapper">
+                            <h2>Sektör Bazlı Onaylanan Başvurular</h2>
+                            <canvas id="sector-approvals-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Demografi Sayfası-->
+            <div id="demography" class="page">
+                <h1>Demografi Analizi</h1>
+                <div class="demographics-stats">
+                    <div class="stat-card">
+                        <h3>Marmara Bölgesi</h3>
+                        <div class="value" id="marmara-applications">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Ege Bölgesi</h3>
+                        <div class="value" id="ege-applications">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>İç Anadolu Bölgesi</h3>
+                        <div class="value" id="ic-anadolu-applications">0</div>
+                    </div>
+                </div>
+
+                <div class="region-analysis">
+                    <div class="analysis-card">
+                        <h2>Bölgelere Göre Sektör Dağılımı</h2>
+                        <canvas id="region-sector-chart"></canvas>
+                    </div>
+                    <div class="analysis-card">
+                        <h2>En Çok Başvuru Alınan İller</h2>
+                        <canvas id="top-cities-chart"></canvas>
+                    </div>
+                    <div class="analysis-card">
+                        <h2>Bölgesel Ciro Haritası</h2>
+                    <div id="region-revenue-map"></div>
+                </div>
+            
+            </div>
+            <!--Sektör Sayfası-->
+            <div id="sector" class="page">
+                <div class="header">
+                    <h1>Sektör Analiz Dashboard</h1>
+            </div>
+            
+                <!-- Filtre Bölümü -->
+                <div class="container">
+                    <div class="filter-section">
+                        <div class="filter-group">
+                            <label>Tarih Aralığı:</label>
+                            <select id="dateRange">
+                                <option value="last30">Son 30 Gün</option>
+                                <option value="last90">Son 90 Gün</option>
+                                <option value="lastYear">Son 1 Yıl</option>
+                                <option value="custom">Özel Aralık</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Sektör:</label>
+                            <select id="sectorFilter" multiple>
+                                <option value="retail">Perakende</option>
+                                <option value="service">Hizmet</option>
+                                <option value="manufacturing">Üretim</option>
+                                <option value="textile">Tekstil</option>
+                                <option value="food">Gıda</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Bölge:</label>
+                            <select id="regionFilter" multiple>
+                                <option value="marmara">Marmara</option>
+                                <option value="ege">Ege</option>
+                                <option value="ic-anadolu">İç Anadolu</option>
+                                <option value="akdeniz">Akdeniz</option>
+                            </select>
+                        </div>
+                        <button id="applyFilters" class="filter-button">Filtreleri Uygula</button>
+                    </div>
+            
+                    <!-- Tab Menüsü -->
+                    <div class="tab-container">
+                        <div class="tab-buttons">
+                            <button class="tab-button active" data-tab="revenue">Ciro Analizi</button>
+                            <button class="tab-button" data-tab="applications">Başvuru Analizi</button>
+                            <button class="tab-button" data-tab="commission">Komisyon Analizi</button>
+                            <button class="tab-button" data-tab="regional">Bölgesel Analiz</button>
+                        </div>
+            
+                        <!-- Tab İçerikleri -->
+                        <div class="tab-content">
+                            <!-- Ciro Analizi Tab -->
+                            <div id="revenue" class="tab-pane active">
+                                <div class="dashboard-grid">
+                                    <div class="dashboard-item">
+                                        <h3>Sektörlere Göre Toplam Ciro</h3>
+                                        <canvas id="sectorRevenue"></canvas>
+                                    </div>
+                                    <div class="dashboard-item">
+                                        <h3>Aylık Ciro Trendi</h3>
+                                        <canvas id="revenueTimeline"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <!-- Başvuru Analizi Tab -->
+                            <div id="applications" class="tab-pane">
+                                <div class="dashboard-grid">
+                                    <div class="dashboard-item">
+                                        <h3>Sektör Bazlı Başvurular</h3>
+                                        <canvas id="sectorApplications"></canvas>
+                                    </div>
+                                    <div class="dashboard-item">
+                                        <h3>Başvuru Onay Oranları</h3>
+                                        <canvas id="applicationApproval"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <!-- Komisyon Analizi Tab -->
+                            <div id="commission" class="tab-pane">
+                                <div class="dashboard-grid">
+                                    <div class="dashboard-item">
+                                        <h3>Sektör Bazlı Komisyon Oranları</h3>
+                                        <canvas id="sectorCommission"></canvas>
+                                    </div>
+                                    <div class="dashboard-item">
+                                        <h3>Komisyon Geliri Dağılımı</h3>
+                                        <canvas id="commissionDistribution"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <!-- Bölgesel Analiz Tab -->
+                            <div id="regional" class="tab-pane">
+                                <div class="dashboard-grid">
+                                    <div class="dashboard-item">
+                                        <h3>Bölgelere Göre Sektör Dağılımı</h3>
+                                        <canvas id="regionalSectors"></canvas>
+                                    </div>
+                                    <div class="dashboard-item">
+                                        <h3>Bölge-Sektör Karşılaştırması</h3>
+                                        <canvas id="sectorRegionComparison"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Ürün Syfası-->
+            <div id="products" class="page">
+                <h1>Ürün Analizi</h1>
+                <div class="product-selector">
+                    <select id="product-selector">
+                        <option value="sanalpos">Sanal POS</option>
+                        <option value="fizikipos">Fiziki POS</option>
+                        <option value="yazarkasa">Yazar Kasa</option>
+                        <option value="barkodokuyucu">Barkod Okuyucu</option>
+                    </select>
+                </div>
+                <div class="product-charts">
+                    <div class="chart-card">
+                        <h2>Müşteri Segmenti Analizi</h2>
+                        <canvas id="product-customer-chart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h2>Sektör Dağılımı</h2>
+                        <canvas id="product-sector-chart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h2>Komisyon Analizi</h2>
+                        <canvas id="product-commission-chart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h2>Ciro Analizi</h2>
+                        <canvas id="product-revenue-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+            
+        
+            <!--
+            <div id="product" class="page">
+                <div class="header">
+                    <h1>Ürün Analizleri Dashboard</h1>
+                </div>
+
+
+                <div class="tabs">
+                    <div class="tab-buttons">
+                        <button class="tab-button active" onclick="openTab('noProducts')">Eksik Ürün Analizi</button>
+                        <button class="tab-button" onclick="openTab('sectorAnalysis')">Sektör Detayları</button>
+                    </div>
+                </div>
+        
+                    <div id="noProducts" class="tab-content active">
+                        <h3>Eksik Ürün Analizi</h3>
+                        <div class="chart-container">
+                            <canvas id="missingProductsChart"></canvas>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Ürün</th>
+                                        <th>Almayan Müşteri Sayısı</th>
+                                        <th>Potansiyel Ciro</th>
+                                        <th>Önerilen Aksiyon</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="noProductsTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+        
+                    <div id="sectorAnalysis" class="tab-content">
+                        <h3>Sektör Bazlı Analiz</h3>
+                        <div class="chart-container">
+                            <canvas id="sectorAnalysisChart"></canvas>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Sektör</th>
+                                        <th>Müşteri Sayısı</th>
+                                        <th>Ortalama Ürün Sayısı</th>
+                                        <th>Penetrasyon</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sectorTable"></tbody>
+                            </table>
+                        </div>
+
+                        <div class="analysis-cards">
+                            <div class="card chart-card">
+                                <h3>Sektör Dağılımı</h3>
+                                <canvas id="sectorChart"></canvas>
+                            </div>
+                            <div class="card chart-card">
+                                <h3>Aylık Trend</h3>
+                                <canvas id="trendChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                
+                
+                <div class="filters">
+                        <select id="sectorFilter">
+                            <option value="">Tüm Sektörler</option>
+                            <option value="Teknoloji">Teknoloji</option>
+                            <option value="Perakende">Perakende</option>
+                            <option value="Üretim">Üretim</option>
+                        </select>
+                        <select id="dateFilter">
+                            <option value="">Tüm Tarihler</option>
+                            <option value="thisMonth">Bu Ay</option>
+                            <option value="lastMonth">Geçen Ay</option>
+                            <option value="last3Months">Son 3 Ay</option>
+                        </select>
+                        <button onclick="applyFilters()">Filtrele</button>
+                </div>
+            </div> 
+            -->
+            
+        
+          
+            
+
+
+            
+        
+    </div>
+    <script type="module" src="/main.js"></script>
+</body>
+</html>
