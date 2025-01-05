@@ -5,48 +5,6 @@ import { initializeDemographicsPage } from './js/demographics.js';
 import { initializeProductPage } from './js/product.js';
 import { initializeSectorPage} from './js/sector.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-    const navLinks = document.querySelectorAll('.nav-links a');
-    const pages = document.querySelectorAll('.page');
-
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            
-            navLinks.forEach(l => l.classList.remove('active'));
-            link.classList.add('active');
-            
-            const pageId = link.getAttribute('data-page');
-            pages.forEach(page => {
-                page.classList.remove('active');
-                if (page.id === pageId) {
-                    page.classList.add('active');
-                }
-            });
-
-            if (pageId === 'home') {
-                initializeDashboard();
-            } else if (pageId === 'commission') {
-                initializeCommissionPage();
-            } else if (pageId === 'application') {
-                initializeApplicationPage();
-            } else if (pageId === 'demography') {
-                initializeDemographicsPage();
-            }
-        });
-    });
-
-    initializeDashboard();
-});
-
-
-/*import { initializeDashboard } from './js/dashboard.js';
-import { initializeCommissionPage } from './js/commission.js';
-import { initializeApplicationPage } from './js/application.js';
-import { initializeDemographicsPage } from './js/demographics.js';
-import {initializeProductPage} from './js/product.js'
-
-
 
 document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelectorAll('.nav-links a');
@@ -79,7 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 initializeApplicationPage();
             } else if (pageId === 'product'){
                 initializeProductPage();
+            } else if (pageId == 'sector'){
+                initializeSectorPage();
+            }else if (pageId == 'demography'){
+                initializeDemographicsPage
             }
+
 
         });
     });
@@ -294,4 +257,4 @@ function getActiveFilters() {
         sectors: Array.from(document.querySelector('#sectorFilter').selectedOptions).map(opt => opt.value).join(','),
         regions: Array.from(document.querySelector('#regionFilter').selectedOptions).map(opt => opt.value).join(',')
     };
-}*/
+}
