@@ -1,7 +1,4 @@
-import { createBarChart, createPieChart } from './charts.js';
-import { initializeMap } from './map.js';
-
-export function initializeDemographicsPage() {
+function initializeDemographicsPage() {
     updateRegionStats();
     createRegionSectorChart();
     createTopCitiesChart();

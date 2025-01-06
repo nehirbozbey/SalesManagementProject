@@ -1,6 +1,4 @@
-import { createBarChart, createPieChart } from './charts.js';
-
-export function initializeProductPage() {
+function initializeProductPage() {
     initializeProductSelector();
     updateCharts('sanalpos'); // Varsayılan olarak sanalpos seçili
 }

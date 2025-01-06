@@ -1,6 +1,4 @@
-import { createBarChart, createPieChart } from './charts.js';
-
-export function initializeApplicationPage() {
+function initializeApplicationPage() {
     updateApplicationStats();
     initializeAnalytics();
 }

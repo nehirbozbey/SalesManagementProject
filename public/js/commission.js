@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeCommissionPage();
 });
 
-export function initializeCommissionPage() {
+function initializeCommissionPage() {
     loadCommissionTable();
     initializeSimulator();
 }

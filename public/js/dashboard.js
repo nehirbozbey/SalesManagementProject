@@ -1,7 +1,4 @@
-import { createLineChart } from './charts.js';
-import { initializeMap } from './map.js';
-
-export function initializeDashboard() {
+function initializeDashboard() {
     updateStatCards();
     initializeMap();
     createSalesChart();
@@ -20,7 +17,6 @@ function updateStatCards() {
     document.getElementById('total-revenue').textContent = stats.totalRevenue;
     document.getElementById('active-region').textContent = stats.activeRegion;
 }
-
 
 function createSalesChart() {
     const ctx = document.getElementById('salesChart').getContext('2d');

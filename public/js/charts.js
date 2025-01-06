@@ -1,4 +1,4 @@
-export function createLineChart(ctx, data) {
+function createLineChart(ctx, data) {
     return new Chart(ctx, {
         type: 'line',
         data: {
@@ -28,7 +28,7 @@ export function createLineChart(ctx, data) {
     });
 }
 
-export function createBarChart(elementId, title, data) {
+function createBarChart(elementId, title, data) {
     const ctx = document.getElementById(elementId).getContext('2d');
     
     const datasets = data.datasets || [{
@@ -60,7 +60,7 @@ export function createBarChart(elementId, title, data) {
     });
 }
 
-export function createPieChart(elementId, title, data) {
+function createPieChart(elementId, title, data) {
     const ctx = document.getElementById(elementId).getContext('2d');
     
     return new Chart(ctx, {

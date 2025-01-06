@@ -1,4 +1,4 @@
-export function initializeMap() {
+function initializeMap() {
     const regions = {
         istanbul: 85,
         ankara: 65,

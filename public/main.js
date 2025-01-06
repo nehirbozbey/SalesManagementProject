@@ -1,11 +1,3 @@
-import { initializeDashboard } from './js/dashboard.js';
-import { initializeCommissionPage } from './js/commission.js';
-import { initializeApplicationPage } from './js/application.js';
-import { initializeDemographicsPage } from './js/demographics.js';
-import { initializeProductPage } from './js/product.js';
-import { initializeSectorPage} from './js/sector.js';
-
-
 document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelectorAll('.nav-links a');
     const pages = document.querySelectorAll('.page');
@@ -37,13 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 initializeApplicationPage();
             } else if (pageId === 'product'){
                 initializeProductPage();
-            } else if (pageId == 'sector'){
+            } else if (pageId === 'sector'){
                 initializeSectorPage();
-            }else if (pageId == 'demography'){
-                initializeDemographicsPage
+            } else if (pageId === 'demography'){
+                initializeDemographicsPage();
             }
-
-
         });
     });
 
