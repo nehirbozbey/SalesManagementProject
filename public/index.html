@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/demographics.css">
     <link rel="stylesheet" href="css/sector-style.css">
     <link rel="stylesheet" href="css/product.css">
+    <link rel="stylesheet" href="css/turkiye.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -55,6 +56,9 @@
                 <div class="map-container">
                     <h2>Bölgesel Performans</h2>
                     <div id="turkey-map"></div>
+                        <div class="il-isimleri"></div>
+                        <div class="svg-turkiye-haritasi"></div>
+                    </div>
                 </div>
                 
                 <div class="chart-container">
@@ -378,15 +382,6 @@
                         <button onclick="applyFilters()">Filtrele</button>
                 </div>
             </div> 
-            
-            
-        
-          
-            
-
-
-            
-        
     </div>
     <script src="js/charts.js"></script>
     <script src="js/map.js"></script>
@@ -397,5 +392,11 @@
     <script src="js/sector.js"></script>
     <script src="js/product.js"></script>
     <script src="main.js"></script>
+    <script src="js/turkiye-haritasi.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            svgturkiyeharitasi();
+        });
+    </script>
 </body>
 </html>

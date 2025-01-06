@@ -1,0 +1,46 @@
+.svg-turkiye-haritasi {
+  max-width: 1140px;
+  margin: 0 auto;
+  text-align: center;
+}
+.svg-turkiye-haritasi svg {
+  width: 100%;
+  height: auto;
+}
+.il-isimleri {
+  position: absolute;
+  z-index: 2;
+}
+.il-isimleri div {
+  font-family: 'Open Sans';
+  display: inline-block;
+  background: #222;
+  color: #fff;
+  padding: 8px 16px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.il-isimleri div strong {
+  display: block;
+  font-size: 1.1em;
+  margin-bottom: 4px;
+}
+
+#svg-turkiye-haritasi path {
+  cursor: pointer;
+  transition: fill 0.3s;
+}
+#svg-turkiye-haritasi path:hover {
+  fill: #666;
+}
+#bolge-1 g path,
+#bolge-2 g path,
+#bolge-3 g path,
+#bolge-4 g path,
+#bolge-5 g path,
+#bolge-6 g path,
+#bolge-7 g path {
+}
