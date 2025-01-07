@@ -1,4 +1,4 @@
-function svgturkiyeharitasi() {
+async function svgturkiyeharitasi() {
   const element = document.querySelector('#svg-turkiye-haritasi');
   const info = document.querySelector('.il-isimleri');
 
@@ -7,28 +7,24 @@ function svgturkiyeharitasi() {
     return;
   }
 
-  // Sample sales data - replace this with your actual data
-  const salesData = {
-    "İstanbul": 1234,
-    "Ankara": 567,
-    "İzmir": 890,
-    // Add data for other cities...
-  };
+  try {
+    // Fetch real data from backend
+    const response = await fetch('http://localhost:3000/dashboard/turkiye');
+    const salesData = await response.json();
 
-  // Find the maximum sales value for scaling
-  const maxSales = Math.max(...Object.values(salesData));
+    // Find the maximum sales value for scaling
+    const maxSales = Math.max(...Object.values(salesData));
 
-  // Color cities based on their sales
-  element.querySelectorAll('path').forEach(path => {
-    const cityName = path.parentNode.getAttribute('data-iladi');
-    const sales = salesData[cityName] || 0;
-    const intensity = (sales / maxSales) * 100; // Convert to percentage
-    path.style.fill = getColorByIntensity(intensity);
-  });
+    // Color cities based on their sales
+    element.querySelectorAll('path').forEach(path => {
+      const cityName = path.parentNode.getAttribute('data-iladi');
+      const sales = salesData[cityName] || 0;
+      const intensity = (sales / maxSales) * 100; // Convert to percentage
+      path.style.fill = getColorByIntensity(intensity);
+    });
 
-  element.addEventListener(
-    'mouseover',
-    function (event) {
+    // Add event listeners
+    element.addEventListener('mouseover', function(event) {
       if (event.target.tagName === 'path') {
         const cityName = event.target.parentNode.getAttribute('data-iladi');
         const sales = salesData[cityName] || 0;
@@ -37,50 +33,30 @@ function svgturkiyeharitasi() {
           '<div>',
           `<strong>${cityName}</strong>`,
           `<br>`,
-          `Satış: ${sales.toLocaleString('tr-TR')}`,
+          `Başvuru: ${sales.toLocaleString('tr-TR')}`,
           '</div>'
         ].join('');
 
-        // Position the tooltip
         info.style.display = 'block';
         info.style.top = event.pageY + 25 + 'px';
         info.style.left = event.pageX + 'px';
 
-        // Highlight effect on hover
         const originalColor = event.target.style.fill;
         event.target.dataset.originalColor = originalColor;
         event.target.style.fill = darkenColor(originalColor);
       }
-    }
-  );
+    });
 
-  element.addEventListener(
-    'mouseout',
-    function (event) {
+    element.addEventListener('mouseout', function(event) {
       info.style.display = 'none';
       if (event.target.tagName === 'path') {
-        // Restore original color
         event.target.style.fill = event.target.dataset.originalColor;
       }
-    }
-  );
+    });
 
-  element.addEventListener(
-    'click',
-    function (event) {
-      if (event.target.tagName === 'path') {
-        const parent = event.target.parentNode;
-        const id = parent.getAttribute('id');
-
-        window.location.href = (
-          '#'
-          + id
-          + '-'
-          + parent.getAttribute('data-plakakodu')
-        );
-      }
-    }
-  );
+  } catch (error) {
+    console.error('Error loading Turkey map data:', error);
+  }
 }
 
 // Function to generate color based on intensity

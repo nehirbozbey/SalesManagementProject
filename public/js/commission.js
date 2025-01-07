@@ -7,37 +7,49 @@ function initializeCommissionPage() {
     initializeSimulator();
 }
 
-function loadCommissionTable() {
-    const tableData = [
-        { sector: "Teknoloji", rate: 15, revenue: "₺1.2M", commission: "₺180K" },
-        { sector: "Gıda", rate: 12, revenue: "₺850K", commission: "₺102K" },
-        { sector: "Tekstil", rate: 10, revenue: "₺2.1M", commission: "₺210K" },
-        { sector: "Otomotiv", rate: 18, revenue: "₺3.5M", commission: "₺630K" },
-        { sector: "Sağlık", rate: 20, revenue: "₺1.8M", commission: "₺360K" }
-    ];
-
+async function loadCommissionTable() {
     const tbody = document.querySelector('#commission-table tbody');
-    tbody.innerHTML = tableData.map(row => `
-        <tr>
-            <td>${row.sector}</td>
-            <td>%${row.rate}</td>
-            <td>${row.revenue}</td>
-            <td>${row.commission}</td>
-        </tr>
-    `).join('');
+    
+    try {
+        const response = await fetch('http://localhost:3000/commission/summary');
+        const data = await response.json();
+        
+        tbody.innerHTML = data.map(row => `
+            <tr>
+                <td>${row.sector}</td>
+                <td>%${row.rate}</td>
+                <td>₺${formatNumber(row.revenue)}</td>
+                <td>₺${formatNumber(row.commission)}</td>
+            </tr>
+        `).join('');
+    } catch (error) {
+        console.error('Error loading commission table:', error);
+        tbody.innerHTML = '<tr><td colspan="4" class="error">Veriler yüklenirken bir hata oluştu.</td></tr>';
+    }
 }
 
-function initializeSimulator() {
+function formatNumber(number) {
+    if (number >= 1000000) {
+        return (number / 1000000).toFixed(1) + 'M';
+    } else if (number >= 1000) {
+        return (number / 1000).toFixed(1) + 'K';
+    }
+    return number.toString();
+}
+
+async function initializeSimulator() {
     const form = document.getElementById('commission-simulator');
     const resultDiv = document.getElementById('simulation-result');
+    let commissionRates = {};
 
-    const commissionRates = {
-        "teknoloji": 15,
-        "gida": 12,
-        "tekstil": 10,
-        "otomotiv": 18,
-        "saglik": 20
-    };
+    try {
+        const response = await fetch('http://localhost:3000/commission/rates');
+        commissionRates = await response.json();
+    } catch (error) {
+        console.error('Error fetching commission rates:', error);
+        resultDiv.innerHTML = '<p class="error">Komisyon oranları yüklenirken bir hata oluştu.</p>';
+        return;
+    }
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -46,7 +58,7 @@ function initializeSimulator() {
         const revenue = parseFloat(form.revenue.value);
         const rate = commissionRates[sector];
 
-        if (!sector || !revenue || revenue <= 0) {
+        if (!sector || !revenue || revenue <= 0 || !rate) {
             resultDiv.innerHTML = '<p class="error">Lütfen geçerli bir sektör ve ciro giriniz.</p>';
             return;
         }
