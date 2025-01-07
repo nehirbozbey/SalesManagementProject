@@ -180,6 +180,7 @@ app.get('/demographics/regional', async (req, res) => {
         COUNT(*) as toplam_basvuru,
         SUM(CASE WHEN bas.durum = '3' THEN 1 ELSE 0 END) as onaylanan,
         SUM(CASE WHEN bas.durum = '1' THEN 1 ELSE 0 END) as reddedilen,
+        SUM(CASE WHEN bas.durum = '2' THEN 1 ELSE 0 END) as bekleyen,
         COALESCE(SUM(CASE WHEN bas.durum = '3' THEN m.ciro ELSE 0 END), 0) as toplam_ciro
       FROM basvurular bas
       JOIN musteri m ON bas.musteri_id = m.id

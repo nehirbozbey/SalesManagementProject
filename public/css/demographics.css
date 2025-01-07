@@ -6,11 +6,96 @@ demographics-stats {
 }
 .stat-card {
     background: white;
+    border-radius: 12px;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin: 15px;
+    flex: 1;
+    min-width: 300px;
 }
 
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card-header {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.stat-card-header h3 {
+    color: #2c3e50;
+    margin: 0 0 10px 0;
+    font-size: 1.4em;
+}
+
+.total-applications {
+    display: flex;
+    flex-direction: column;
+}
+
+.total-applications .number {
+    font-size: 2em;
+    font-weight: bold;
+    color: #3498db;
+}
+
+.total-applications .label {
+    color: #7f8c8d;
+    font-size: 0.9em;
+}
+
+.stat-card-body {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.stat-item i {
+    font-size: 1.2em;
+    margin-right: 10px;
+    width: 24px;
+    text-align: center;
+}
+
+.stat-item .fa-check-circle { color: #2ecc71; }
+.stat-item .fa-times-circle { color: #e74c3c; }
+.stat-item .fa-clock { color: #f1c40f; }
+.stat-item .fa-lira-sign { color: #3498db; }
+
+.stat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-info .number {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.stat-info .label {
+    font-size: 0.8em;
+    color: #7f8c8d;
+}
+
+#region-stats-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
 
 .region-analysis {
     display: grid;
