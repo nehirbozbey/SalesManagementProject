@@ -2,6 +2,11 @@ function svgturkiyeharitasi() {
   const element = document.querySelector('#svg-turkiye-haritasi');
   const info = document.querySelector('.il-isimleri');
 
+  if (!element || !info) {
+    console.error('Required elements not found');
+    return;
+  }
+
   // Sample sales data - replace this with your actual data
   const salesData = {
     "İstanbul": 1234,
@@ -36,6 +41,11 @@ function svgturkiyeharitasi() {
           '</div>'
         ].join('');
 
+        // Position the tooltip
+        info.style.display = 'block';
+        info.style.top = event.pageY + 25 + 'px';
+        info.style.left = event.pageX + 'px';
+
         // Highlight effect on hover
         const originalColor = event.target.style.fill;
         event.target.dataset.originalColor = originalColor;
@@ -45,17 +55,9 @@ function svgturkiyeharitasi() {
   );
 
   element.addEventListener(
-    'mousemove',
-    function (event) {
-      info.style.top = event.pageY + 25 + 'px';
-      info.style.left = event.pageX + 'px';
-    }
-  );
-
-  element.addEventListener(
     'mouseout',
     function (event) {
-      info.innerHTML = '';
+      info.style.display = 'none';
       if (event.target.tagName === 'path') {
         // Restore original color
         event.target.style.fill = event.target.dataset.originalColor;
