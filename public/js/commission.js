@@ -58,6 +58,7 @@ async function initializeSimulator() {
         const revenue = parseFloat(form.revenue.value);
         const rate = commissionRates[sector];
 
+        console.log(sector, revenue, rate);
         if (!sector || !revenue || revenue <= 0 || !rate) {
             resultDiv.innerHTML = '<p class="error">Lütfen geçerli bir sektör ve ciro giriniz.</p>';
             return;
