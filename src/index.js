@@ -173,59 +173,61 @@ app.get("/commission/summary", async (req, res) => {
 
 app.get('/demographics/regional', async (req, res) => {
   try {
-    // Get regional stats
-    const [regionalStats] = await db.query(`
+    // Bölgesel başvuru sayılarını çek
+    const [bolgeselIstatistikler] = await db.query(`
       SELECT 
-        i.bolge as region,
-        COUNT(*) as basvuru_count,
-        SUM(CASE WHEN b.durum = '3' THEN 1 ELSE 0 END) as onay_count,
-        SUM(CASE WHEN b.durum = '1' THEN 1 ELSE 0 END) as red_count,
-        SUM(CASE WHEN b.durum = '3' THEN m.ciro ELSE 0 END) as total_ciro
-      FROM basvurular b
-      JOIN musteri m ON b.musteri_id = m.id
+        b.ad as bolge_adi,
+        COUNT(*) as toplam_basvuru,
+        SUM(CASE WHEN bas.durum = '3' THEN 1 ELSE 0 END) as onaylanan,
+        SUM(CASE WHEN bas.durum = '1' THEN 1 ELSE 0 END) as reddedilen,
+        COALESCE(SUM(CASE WHEN bas.durum = '3' THEN m.ciro ELSE 0 END), 0) as toplam_ciro
+      FROM basvurular bas
+      JOIN musteri m ON bas.musteri_id = m.id
       JOIN iller i ON m.il_id = i.id
-      GROUP BY i.bolge
-      ORDER BY basvuru_count DESC
+      JOIN bolge b ON i.bolge_id = b.id
+      GROUP BY b.id, b.ad
+      ORDER BY toplam_basvuru DESC
     `);
 
-    // Get sector distribution by region
-    const [sectorStats] = await db.query(`
+    // Sektör dağılımını çek
+    const [sektorDagilimi] = await db.query(`
       SELECT 
-        i.bolge as region,
-        s.sektor_ad as sector,
-        COUNT(*) as count
-      FROM basvurular b
-      JOIN musteri m ON b.musteri_id = m.id
+        b.ad as bolge_adi,
+        s.sektor_ad as sektor,
+        COUNT(*) as adet
+      FROM basvurular bas
+      JOIN musteri m ON bas.musteri_id = m.id
       JOIN iller i ON m.il_id = i.id
+      JOIN bolge b ON i.bolge_id = b.id
       JOIN sektor s ON m.sektor_id = s.id
-      GROUP BY i.bolge, s.sektor_ad
-      ORDER BY i.bolge, count DESC
+      GROUP BY b.id, b.ad, s.sektor_ad
+      ORDER BY b.ad, adet DESC
     `);
 
-    // Get top cities
-    const [topCities] = await db.query(`
+    // En çok başvuru yapılan 5 ili çek
+    const [populerIller] = await db.query(`
       SELECT 
-        i.ad as city,
-        COUNT(*) as count
-      FROM basvurular b
-      JOIN musteri m ON b.musteri_id = m.id
+        i.ad as il_adi,
+        COUNT(*) as basvuru_sayisi
+      FROM basvurular bas
+      JOIN musteri m ON bas.musteri_id = m.id
       JOIN iller i ON m.il_id = i.id
-      GROUP BY i.ad
-      ORDER BY count DESC
+      GROUP BY i.id, i.ad
+      ORDER BY basvuru_sayisi DESC
       LIMIT 5
     `);
 
     res.json({
-      regionalStats: regionalStats,
-      sectorDistribution: sectorStats,
-      topCities: {
-        labels: topCities.map(c => c.city),
-        values: topCities.map(c => c.count)
+      bolgeselIstatistikler,
+      sektorDagilimi,
+      populerIller: {
+        labels: populerIller.map(il => il.il_adi),
+        values: populerIller.map(il => il.basvuru_sayisi)
       }
     });
   } catch (error) {
-    console.error('Error fetching demographic data:', error);
-    res.status(500).json({ error: 'Demografik veriler alınırken hata oluştu' });
+    console.error('Demografik veri çekerken hata:', error);
+    res.status(500).json({ hata: 'Veriler çekilemedi :(' });
   }
 });
 
@@ -284,8 +286,8 @@ app.get('/basvuru/analytics', async (req, res) => {
       sektorData: sektorData
     });
   } catch (error) {
-    console.error('Error fetching application analytics:', error);
-    res.status(500).json({ error: 'Veriler alınırken hata oluştu' });
+    console.error("Error fetching application analytics:", error);
+    res.status(500).json({ error: "Veriler alınırken hata oluştu" });
   }
 });
 
